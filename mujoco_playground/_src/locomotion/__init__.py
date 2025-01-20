@@ -25,6 +25,10 @@ from mujoco_playground._src import mjx_env
 from mujoco_playground._src.locomotion.barkour import joystick as barkour_joystick
 from mujoco_playground._src.locomotion.berkeley_humanoid import joystick as berkeley_humanoid_joystick
 from mujoco_playground._src.locomotion.berkeley_humanoid import randomize as berkeley_humanoid_randomize
+
+from mujoco_playground._src.locomotion.biped import joystick as berkeley_humanoid_joystick
+from mujoco_playground._src.locomotion.biped import randomize as berkeley_humanoid_randomize
+
 from mujoco_playground._src.locomotion.g1 import joystick as g1_joystick
 from mujoco_playground._src.locomotion.g1 import randomize as g1_randomize
 from mujoco_playground._src.locomotion.go1 import getup as go1_getup
