@@ -1,5 +1,5 @@
-<mujoco model="berkeley humanoid feet only rough terrain scene">
-  <include file="berkeley_humanoid_mjx_feetonly.xml"/>
+<mujoco model="biped rough terrain scene">
+  <include file="biped.xml"/>
 
   <statistic center="0 0 0.1" extent="0.8" meansize="0.04"/>
 

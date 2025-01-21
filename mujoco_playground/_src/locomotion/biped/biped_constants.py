@@ -17,20 +17,19 @@
 from etils import epath
 
 from mujoco_playground._src import mjx_env
-
-ROOT_PATH = mjx_env.ROOT_PATH / "locomotion" / "berkeley_humanoid"
-FEET_ONLY_FLAT_TERRAIN_XML = (
+print(mjx_env.ROOT_PATH)
+ROOT_PATH = mjx_env.ROOT_PATH / "locomotion" / "biped"
+FLAT_TERRAIN_XML = (
     ROOT_PATH / "xmls" / "scene_mjx_feetonly_flat_terrain.xml"
 )
-FEET_ONLY_ROUGH_TERRAIN_XML = (
+ROUGH_TERRAIN_XML = (
     ROOT_PATH / "xmls" / "scene_mjx_feetonly_rough_terrain.xml"
 )
 
-
 def task_to_xml(task_name: str) -> epath.Path:
   return {
-      "flat_terrain": FEET_ONLY_FLAT_TERRAIN_XML,
-      "rough_terrain": FEET_ONLY_ROUGH_TERRAIN_XML,
+      "flat_terrain": FLAT_TERRAIN_XML,
+      "rough_terrain": ROUGH_TERRAIN_XML,
   }[task_name]
 
 
@@ -40,18 +39,18 @@ FEET_SITES = [
 ]
 
 LEFT_FEET_GEOMS = [
-    "l_foot1",
+    "L_FOOT_GEOM",
 ]
 
 RIGHT_FEET_GEOMS = [
-    "r_foot1",
+    "R_FOOT_GEOM",
 ]
 
 FEET_GEOMS = LEFT_FEET_GEOMS + RIGHT_FEET_GEOMS
 
 FEET_POS_SENSOR = [f"{site}_pos" for site in FEET_SITES]
 
-ROOT_BODY = "torso"
+ROOT_BODY = "base_link"
 
 GRAVITY_SENSOR = "upvector"
 GLOBAL_LINVEL_SENSOR = "global_linvel"

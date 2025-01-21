@@ -26,8 +26,8 @@ import numpy as np
 from mujoco_playground._src import gait
 from mujoco_playground._src import mjx_env
 from mujoco_playground._src.collision import geoms_colliding
-from mujoco_playground._src.locomotion.berkeley_humanoid import base as berkeley_humanoid_base
-from mujoco_playground._src.locomotion.berkeley_humanoid import berkeley_humanoid_constants as consts
+from mujoco_playground._src.locomotion.biped import base as biped_base
+from mujoco_playground._src.locomotion.biped import biped_constants as consts
 
 
 def default_config() -> config_dict.ConfigDict:
@@ -44,8 +44,6 @@ def default_config() -> config_dict.ConfigDict:
           scales=config_dict.create(
               hip_pos=0.03,  # rad
               kfe_pos=0.05,
-              ffe_pos=0.08,
-              faa_pos=0.03,
               joint_vel=1.5,  # rad/s
               gravity=0.05,
               linvel=0.1,
@@ -97,7 +95,7 @@ def default_config() -> config_dict.ConfigDict:
   )
 
 
-class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
+class Joystick(biped_base.BerkeleyHumanoidEnv):
   """Track a joystick command."""
 
   def __init__(
@@ -116,6 +114,7 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
   def _post_init(self) -> None:
     self._init_q = jp.array(self._mj_model.keyframe("home").qpos)
     self._default_pose = jp.array(self._mj_model.keyframe("home").qpos[7:])
+    self.nb_joints = len(self._default_pose)
 
     # Note: First joint is freejoint.
     self._lowers, self._uppers = self.mj_model.jnt_range[1:].T
@@ -125,8 +124,8 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
     self._soft_uppers = c + 0.5 * r * self._config.soft_joint_pos_limit_factor
 
     hip_indices = []
-    hip_joint_names = ["HR", "HAA"]
-    for side in ["LL", "LR"]:
+    hip_joint_names = ["YAW", "HAA"]
+    for side in ["L", "R"]:
       for joint_name in hip_joint_names:
         hip_indices.append(
             self._mj_model.joint(f"{side}_{joint_name}").qposadr - 7
@@ -134,20 +133,20 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
     self._hip_indices = jp.array(hip_indices)
 
     knee_indices = []
-    for side in ["LL", "LR"]:
+    for side in ["L", "R"]:
       knee_indices.append(self._mj_model.joint(f"{side}_KFE").qposadr - 7)
     self._knee_indices = jp.array(knee_indices)
 
     # fmt: off
     self._weights = jp.array([
-        1.0, 1.0, 0.01, 0.01, 1.0, 1.0,  # left leg.
-        1.0, 1.0, 0.01, 0.01, 1.0, 1.0,  # right leg.
+        1.0, 1.0, 0.01, 0.01, 1.0,  # left leg.
+        1.0, 1.0, 0.01, 0.01, 1.0,  # right leg.
     ])
     # fmt: on
 
     self._torso_body_id = self._mj_model.body(consts.ROOT_BODY).id
     self._torso_mass = self._mj_model.body_subtreemass[self._torso_body_id]
-    self._site_id = self._mj_model.site("imu").id
+    self._site_id = self._mj_model.site("imu_location").id
 
     self._feet_site_id = np.array(
         [self._mj_model.site(name).id for name in consts.FEET_SITES]
@@ -167,15 +166,15 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
       )
     self._foot_linvel_sensor_adr = jp.array(foot_linvel_sensor_adr)
 
-    qpos_noise_scale = np.zeros(12)
-    hip_ids = [0, 1, 2, 6, 7, 8]
-    kfe_ids = [3, 9]
-    ffe_ids = [4, 10]
-    faa_ids = [5, 11]
-    qpos_noise_scale[hip_ids] = self._config.noise_config.scales.hip_pos
-    qpos_noise_scale[kfe_ids] = self._config.noise_config.scales.kfe_pos
-    qpos_noise_scale[ffe_ids] = self._config.noise_config.scales.ffe_pos
-    qpos_noise_scale[faa_ids] = self._config.noise_config.scales.faa_pos
+    qpos_noise_scale = np.zeros(self.nb_joints)
+    # hip_ids = [0, 1, 2, 6, 7, 8]
+    # kfe_ids = [3, 9]
+    # ffe_ids = [4, 10]
+    # faa_ids = [5, 11]
+    # qpos_noise_scale[hip_ids] = self._config.noise_config.scales.hip_pos
+    # qpos_noise_scale[kfe_ids] = self._config.noise_config.scales.kfe_pos
+    # qpos_noise_scale[ffe_ids] = self._config.noise_config.scales.ffe_pos
+    # qpos_noise_scale[faa_ids] = self._config.noise_config.scales.faa_pos
     self._qpos_noise_scale = jp.array(qpos_noise_scale)
 
   def reset(self, rng: jax.Array) -> mjx_env.State:
@@ -195,7 +194,7 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
     # qpos[7:]=*U(0.5, 1.5)
     rng, key = jax.random.split(rng)
     qpos = qpos.at[7:].set(
-        qpos[7:] * jax.random.uniform(key, (12,), minval=0.5, maxval=1.5)
+        qpos[7:] * jax.random.uniform(key, (self.nb_joints,), minval=0.5, maxval=1.5)
     )
 
     # d(xyzrpy)=U(-0.5, 0.5)
@@ -203,8 +202,9 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
     qvel = qvel.at[0:6].set(
         jax.random.uniform(key, (6,), minval=-0.5, maxval=0.5)
     )
-
-    data = mjx_env.init(self.mjx_model, qpos=qpos, qvel=qvel, ctrl=qpos[7:])
+    
+    self._init_ctrl = jp.zeros(self.mjx_model.nu)
+    data = mjx_env.init(self.mjx_model, qpos=qpos, qvel=qvel, ctrl=self._init_ctrl)
 
     # Phase, freq=U(1.0, 1.5)
     rng, key = jax.random.split(rng)
@@ -277,7 +277,7 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
     data = state.data.replace(qvel=qvel)
     state = state.replace(data=data)
 
-    motor_targets = self._default_pose + action * self._config.action_scale
+    motor_targets = action * self._config.action_scale
     data = mjx_env.step(
         self.mjx_model, state.data, motor_targets, self.n_substeps
     )
@@ -397,9 +397,9 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
         noisy_gyro,  # 3
         noisy_gravity,  # 3
         info["command"],  # 3
-        noisy_joint_angles - self._default_pose,  # 12
-        noisy_joint_vel,  # 12
-        info["last_act"],  # 12
+        noisy_joint_angles - self._default_pose,  # 10
+        noisy_joint_vel,  # 10
+        info["last_act"],  # 20
         phase,
     ])
 
@@ -418,7 +418,7 @@ class Joystick(berkeley_humanoid_base.BerkeleyHumanoidEnv):
         joint_angles - self._default_pose,
         joint_vel,
         root_height,  # 1
-        data.actuator_force,  # 12
+        data.actuator_force,  # 20
         contact,  # 2
         feet_vel,  # 4*3
         info["feet_air_time"],  # 2

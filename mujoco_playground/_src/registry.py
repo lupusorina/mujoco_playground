@@ -30,7 +30,6 @@ DomainRandomizer = Optional[
 
 ALL_ENVS = locomotion.ALL + manipulation.ALL + dm_control_suite.ALL
 
-
 def get_default_config(env_name: str):
   if env_name in manipulation.ALL:
     return manipulation.get_default_config(env_name)

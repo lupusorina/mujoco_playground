@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""Base classes for Berkeley Humanoid."""
+"""Base classes for Biped."""
 
 from typing import Any, Dict, Optional, Union
 
@@ -24,16 +24,13 @@ import mujoco
 from mujoco import mjx
 
 from mujoco_playground._src import mjx_env
-from mujoco_playground._src.locomotion.berkeley_humanoid import berkeley_humanoid_constants as consts
+from mujoco_playground._src.locomotion.biped import biped_constants as consts
 
 
 def get_assets() -> Dict[str, bytes]:
   assets = {}
   mjx_env.update_assets(assets, consts.ROOT_PATH / "xmls", "*.xml")
   mjx_env.update_assets(assets, consts.ROOT_PATH / "xmls" / "assets")
-  path = mjx_env.MENAGERIE_PATH / "berkeley_humanoid"
-  mjx_env.update_assets(assets, path, "*.xml")
-  mjx_env.update_assets(assets, path / "assets")
   return assets
 
 
@@ -51,6 +48,7 @@ class BerkeleyHumanoidEnv(mjx_env.MjxEnv):
     self._mj_model = mujoco.MjModel.from_xml_string(
         epath.Path(xml_path).read_text(), assets=get_assets()
     )
+    print(epath.Path(xml_path).read_text())
     self._mj_model.opt.timestep = self.sim_dt
 
     self._mj_model.vis.global_.offwidth = 3840
