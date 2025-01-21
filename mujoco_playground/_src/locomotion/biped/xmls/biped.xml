@@ -67,19 +67,19 @@
         <inertial pos="0.0219446 0.0 -0.0303917" quat="1. 0. 0. 0." mass="0.0629568" diaginertia="0.0000516473 0.00015296 0.0001162"/>
         <joint name="L_YAW" pos="0 0 0" axis="0 0 1" limited="true" range="-0.3 0.3"/>
         <geom class="visual" name="L_HIP" type="mesh" rgba="1 1 1 1" mesh="L_HIP"/>
-        <geom class="collision" size="0.055 0.02" pos="0 -0.0 -0.0649318" quat="0.653281 0.653281 0.270598 -0.270598" type="cylinder"/>
+        <!-- <geom class="collision" size="0.055 0.02" pos="0 -0.0 -0.0649318" quat="0.653281 0.653281 0.270598 -0.270598" type="cylinder"/> -->
 
         <body name="L_SHOULDER" pos="0.0069 0 -0.081">
           <inertial pos="-0.0382844 -0.0118964 0.0020477" quat="1. 0. 0. 0."  mass="1.009" diaginertia="0.00052198 0.000511 0.00039225"/>
           <joint name="L_HAA" pos="0 0 0" axis="1 0 0" limited="true" range="-0.25 0.25"/>
           <geom class="visual" name="L_SHOULDER" type="mesh" rgba="1 0 0 1" mesh="L_SHOULDER"/>
-          <geom class="collision" size="0.0615 0.045" pos="0 0 0" quat="0.707  0.707 0 0" type="cylinder"/>
+          <!-- <geom class="collision" size="0.0615 0.045" pos="0 0 0" quat="0.707  0.707 0 0" type="cylinder"/> -->
 
           <body name="L_UPPER_LEG" pos="0 0 0">
             <inertial pos="-0.00032 -0.05085 -0.05289" quat="1. 0. 0. 0." mass="0.800" diaginertia="0.00110 0.001347 0.00033709"/>
             <joint name="L_HFE" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5 1.5"/>
             <geom class="visual" name="L_UPPER_LEG" type="mesh"  rgba="1 0 0 1" mesh="L_UPPER_LEG"/>
-            <geom class="collision" size="0.04 0.015 0.14" pos="0 0.08 -0.12" quat="1 0 0 0" type="box"/>
+            <!-- <geom class="collision" size="0.04 0.015 0.14" pos="0 0.08 -0.12" quat="1 0 0 0" type="box"/> -->
 
             <body name="L_LOWER_LEG" pos="0 0.0589 -0.23405">
               <inertial pos="0.0 -0.0176 -0.1117" quat="1. 0. 0. 0." mass="0.0923619" diaginertia="0.000437226 0.000437181 1.55724e-05"/>
@@ -103,19 +103,19 @@
         <inertial pos="0.0219446 0.0 -0.0303917" quat="1. 0. 0. 0." mass="0.0629568" diaginertia="0.000152966 0.00015296 0.0001162"/>
         <joint name="R_YAW" pos="0 0 0" axis="0 0 1" limited="true" range="-0.3 0.3"/>
         <geom class="visual" name="R_HIP" type="mesh" rgba="0.69804 0.69804 0.69804 1" mesh="R_HIP"/>
-        <geom class="collision" size="0.055 0.02" pos="0 -0.0 -0.0649318" quat="0.653281 0.653281 0.270598 -0.270598" type="cylinder"/>
+        <!-- <geom class="collision" size="0.055 0.02" pos="0 -0.0 -0.0649318" quat="0.653281 0.653281 0.270598 -0.270598" type="cylinder"/> -->
 
         <body name="R_SHOULDER" pos="0.0069 0 -0.081">
           <inertial pos="-0.0382844 0.0118964 0.0020477" quat="1. 0. 0. 0." mass="1.009" diaginertia="0.00052198 0.000511 0.00039225"/>
           <joint name="R_HAA" pos="0 0 0" axis="1 0 0" limited="true" range="-0.25 0.25"/>
           <geom class="visual" name="R_SHOULDER" type="mesh" rgba="1 0 0 1" mesh="R_SHOULDER"/>
-          <geom class="collision" size="0.0615 0.045" pos="0 0 0" quat="0.707  0.707 0 0" type="cylinder"/>
+          <!-- <geom class="collision" size="0.0615 0.045" pos="0 0 0" quat="0.707  0.707 0 0" type="cylinder"/> -->
 
           <body name="R_UPPER_LEG" pos="0 0 0">
             <inertial pos="-0.00032 0.05085 -0.05289" quat="1. 0. 0. 0." mass="0.800" diaginertia="0.00110 0.001347 0.00033709"/>
             <joint name="R_HFE" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5 1.5"/>
             <geom class="visual" name="R_UPPER_LEG" type="mesh" rgba="1 0 0 1" mesh="R_UPPER_LEG"/>
-            <geom class="collision" size="0.04 0.015 0.14" pos="0 -0.08 -0.12" quat="1 0 0 0" type="box"/>
+            <!-- <geom class="collision" size="0.04 0.015 0.14" pos="0 -0.08 -0.12" quat="1 0 0 0" type="box"/> -->
 
             <body name="R_LOWER_LEG" pos="0 -0.0584 -0.23405">
               <inertial pos="0.0 0.0176 -0.1117" quat="1. 0. 0. 0." mass="0.0923619" diaginertia="0.00043718 0.000437218 1.557642E-05"/>
