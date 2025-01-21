@@ -85,7 +85,7 @@
               <inertial pos="0.0 -0.0176 -0.1117" quat="1. 0. 0. 0." mass="0.0923619" diaginertia="0.000437226 0.000437181 1.55724e-05"/>
               <joint name="L_KFE" pos="0 0 0" axis="0 1 0" limited="true" range="-2.2 -0.1"/>
               <geom class="visual" name="L_LOWER_LEG" type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="L_LOWER_LEG"/>
-              <geom class="collision" size="0.015 0.015 0.155" pos="0 -0.02 -0.155" quat="1 0 0 0" type="box"/>
+              <geom class="collision" size="0.015 0.015 0.145" pos="0 -0.02 -0.145" quat="1 0 0 0" type="box"/>
 
               <body name="L_FOOT" pos="0 -0.0173 -0.30826">
                 <inertial pos="3.02322e-05 -2.36197e-08 -0.0242543" quat="0.710914 0 0.703279 0" mass="0.03134" diaginertia="3.39896e-05 3.35525e-05 1.53506e-06"/>
@@ -121,7 +121,7 @@
               <inertial pos="0.0 0.0176 -0.1117" quat="1. 0. 0. 0." mass="0.0923619" diaginertia="0.00043718 0.000437218 1.557642E-05"/>
               <joint name="R_KFE" pos="0 0 0" axis="0 1 0" limited="true" range="-2.2 -0.1"/>
               <geom class="visual" name="R_LOWER_LEG" type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="R_LOWER_LEG"/>
-              <geom class="collision" size="0.015 0.015 0.155" pos="0 0.02 -0.155" quat="1 0 0 0" type="box"/>
+              <geom class="collision" size="0.015 0.015 0.145" pos="0 0.02 -0.145" quat="1 0 0 0" type="box"/>
 
               <body name="R_FOOT" pos="0 0.0173 -0.30826">
                 <inertial pos="-3.02322e-05 2.36197e-08 -0.0242543" quat="0.710914 0 0.703279 0" mass="0.03134" diaginertia="3.39896e-05 3.35525e-05 1.53506e-06"/>
